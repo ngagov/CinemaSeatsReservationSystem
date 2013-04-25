@@ -1,0 +1,98 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.0.3.xsd
+	http://www.springframework.org/schema/jdbc 
+	http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+	
+	<context:component-scan base-package="com.ccbilleu.cinema.controller" />
+	<mvc:annotation-driven />
+	<context:annotation-config />
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+<beans:bean id="datasource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <beans:property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+    <beans:property name="url" value="jdbc:hsqldb:file:resources/db/testb;shutdown=true" />
+    <beans:property name="username" value="SA" /> 
+</beans:bean>
+
+<beans:bean id="pool" class="org.apache.commons.pool.impl.GenericObjectPool">
+        <beans:property name="minEvictableIdleTimeMillis"><beans:value>300000</beans:value></beans:property>
+        <beans:property name="timeBetweenEvictionRunsMillis"><beans:value>60000</beans:value></beans:property>
+    </beans:bean>
+
+    <beans:bean id="dsConnectionFactory" class="org.apache.commons.dbcp.DataSourceConnectionFactory">
+        <beans:constructor-arg><beans:ref bean="datasource"/></beans:constructor-arg>
+    </beans:bean>
+
+    <beans:bean id="poolableConnectionFactory" class="org.apache.commons.dbcp.PoolableConnectionFactory">
+        <beans:constructor-arg index="0"><beans:ref bean="dsConnectionFactory"/></beans:constructor-arg>
+        <beans:constructor-arg index="1"><beans:ref bean="pool"/></beans:constructor-arg>
+        <beans:constructor-arg index="2"><beans:null/></beans:constructor-arg>
+        <beans:constructor-arg index="3"><beans:null/></beans:constructor-arg>
+        <beans:constructor-arg index="4"><beans:value>false</beans:value></beans:constructor-arg>
+        <beans:constructor-arg index="5"><beans:value>true</beans:value></beans:constructor-arg>
+    </beans:bean>
+
+    <beans:bean id="pooledDS" class="org.apache.commons.dbcp.PoolingDataSource" depends-on="poolableConnectionFactory">
+        <beans:constructor-arg><beans:ref bean="pool"/></beans:constructor-arg>
+    </beans:bean>
+
+<beans:bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect" />
+
+<beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <beans:property name="dataSource" ref="pooledDS" />
+    <beans:property name="persistenceUnitName" value="ccbilleu" />
+    <beans:property name="jpaDialect" ref="jpaDialect" />
+    <beans:property name="jpaVendorAdapter">
+        <beans:bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter" />
+    </beans:property>
+    <beans:property name="loadTimeWeaver">
+        <beans:bean class="com.ccbilleu.cinema.db.JpaAwareLoadTimeWeaver" />
+    </beans:property>
+</beans:bean>
+
+<beans:bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <beans:property name="entityManagerFactory" ref="entityManagerFactory" />
+</beans:bean>
+ 
+<beans:bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+ 	
+ 	<beans:bean id="cinemaDao" class="com.ccbilleu.cinema.db.dao.impl.BaseCinemaDao" />
+ 	<beans:bean id="movieDao" class="com.ccbilleu.cinema.db.dao.impl.BaseMovieDao" />
+ 	<beans:bean id="seatDao" class="com.ccbilleu.cinema.db.dao.impl.BaseSeatDao" />
+ 	
+ 	<beans:bean id="cinemaService" class="com.ccbilleu.cinema.service.impl.BaseCinemaServiceImpl" >
+ 		<beans:property name="cinemaDao" ref="cinemaDao"/>
+ 	</beans:bean>
+
+ 	<beans:bean id="movieService" class="com.ccbilleu.cinema.service.impl.BaseMovieServiceImpl" >
+ 		<beans:property name="movieDao" ref="movieDao"/>
+ 	</beans:bean>
+ 	
+ 	<beans:bean id="seatService" class="com.ccbilleu.cinema.service.impl.BaseSeatServiceImpl" >
+ 		<beans:property name="seatDao" ref="seatDao"/>
+ 	</beans:bean>
+ 	
+ 	<beans:bean id="testService" class="com.ccbilleu.cinema.service.impl.BaseTestServiceImpl" init-method="init" >
+ 		<beans:property name="databaseSetupService" ref="databaseSetupService"/>
+ 	</beans:bean>
+
+	<beans:bean id="databaseSetupService" class="com.ccbilleu.cinema.service.impl.BaseDatabaseSetupServiceImpl" >
+		<beans:property name="cinemaService" ref="cinemaService"/>
+	</beans:bean>
+	
+</beans:beans>

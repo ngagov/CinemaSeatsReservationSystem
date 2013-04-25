@@ -1,0 +1,90 @@
+.errorblock {
+	display: none;
+}
+.FREE, #legendFree {
+	cursor: pointer;
+	background-image:url('../images/seat_0.png');
+	background-repeat:no-repeat;
+	background-position:center;
+}
+
+.OCCUPIED_BY_ME, .OCCUPIED_BY_ME_NEW, #legendOccupiedByMe {
+	cursor: pointer;
+	background-image:url('../images/seat_5.png');
+	background-repeat:no-repeat;
+	background-position:center;
+}
+
+.OCCUPIED, #legendOccupied {
+	cursor: pointer;
+	background-image:url('../images/seat_1.png');
+	background-repeat:no-repeat;
+	background-position:center;
+}
+
+#seats td {
+	padding: 10px;
+}
+.mainTable {
+	width: 900px;
+}
+.mainTable td {
+	padding: 0px;
+	vertical-align:top;
+}
+
+td.futureMovie, td.movie {
+	cursor: pointer;
+}
+
+#legendFree, #legendOccupiedByMe, #legendOccupied {
+	width: 15px;
+	height: 15px;
+	float: left;
+	margin-left: 5px;
+	margin-right: 3px;
+}
+
+
+#currentTheatre, #movieShowsList, #moviesList {
+	float: left;
+	margin-right: 6px;
+}
+
+.legendText {
+	float: left;
+}
+
+.clear-both {
+   clear: both;
+}
+
+#legend {
+	margin-top: 10px;
+}
+
+#bannerDiv img {
+	padding:1px;
+	border:1px solid #021a40;
+	background-color:#ff0;
+}
+
+#logout {
+	margin-left: 5px;
+}
+
+#bannerDescription, #bannerDescriptionCommingSoon {
+	width: 170px;
+}
+
+#bannerDiv {
+	float: left;
+}
+
+#favoriteMovie {
+	margin: 5px;
+}
+
+#availableSeats {
+	margin-top: 100px;
+}
