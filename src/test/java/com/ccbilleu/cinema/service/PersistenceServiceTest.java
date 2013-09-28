@@ -44,6 +44,7 @@ public class PersistenceServiceTest {
 		Assert.assertEquals("Arena Cinema Max", cinema.getName());
 		
 		Set<Movie> movies = cinema.getMovies();
+
 		Assert.assertNotNull(movies);
 		Assert.assertFalse(movies.isEmpty());
 		
