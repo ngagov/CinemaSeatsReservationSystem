@@ -21,7 +21,7 @@ import com.ccbilleu.cinema.db.model.Seat;
 import com.ccbilleu.cinema.db.model.Theatre;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath:WEB-INF/application-context.xml")
+@ContextConfiguration(locations="classpath:application-context.xml")
 public class PersistenceServiceTest {
 
 	@Autowired
