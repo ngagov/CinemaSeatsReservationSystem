@@ -41,7 +41,7 @@ public class PersistenceServiceTest {
 	public void testListCinemas() throws DaoException {
 		Cinema cinema = cinemaService.getDefaultCinema();
 		Assert.assertNotNull(cinema);
-		Assert.assertEquals("Arena Cinema Max", cinema.getName());
+		Assert.assertEquals("Arena Cinema Max ", cinema.getName());
 		
 		Set<Movie> movies = cinema.getMovies();
 		Assert.assertNotNull(movies);
