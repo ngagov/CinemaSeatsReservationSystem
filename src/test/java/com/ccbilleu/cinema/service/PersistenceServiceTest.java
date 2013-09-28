@@ -46,7 +46,6 @@ public class PersistenceServiceTest {
 		Set<Movie> movies = cinema.getMovies();
 		Assert.assertNotNull(movies);
 		Assert.assertFalse(movies.isEmpty());
-
 		
 		Movie movie = movies.iterator().next();
 		Collection<MovieShow> movieShows = movie.getMovieShows();
